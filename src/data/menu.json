@@ -1,0 +1,13 @@
+{
+  "Soups": [
+    { "id": "1", "name": "Sweetcorn Soup", "price": "99", "qtysold": "0" ,"total":""},
+    { "id": "2", "name": "Cream of Mushroom", "price": "99", "qty": "0" },
+    { "id": "3", "name": "Tomato Soup", "price": "99", "qty": "0" },
+    { "id": "4", "name": "French Onion Soup", "price": "99", "qty": "0" },
+    { "id": "5", "name": "Veg Clear Soup", "price": "99", "qty": "0" },
+    { "id": "6", "name": "Veg Manchow Soup", "price": "99", "qty": "0" },
+    { "id": "7", "name": "Hot & Sour Veg Soup", "price": "99", "qty": "0" },
+    { "id": "8", "name": "Lemon Coriander Soup", "price": "99", "qty": "0" }
+    
+  ]
+}
