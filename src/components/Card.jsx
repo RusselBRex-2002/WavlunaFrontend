@@ -199,7 +199,7 @@ function Card() {
         <Toast.Body>Order Completed</Toast.Body>
       </Toast>
 
-      <Button variant="primary" className="col-1" onClick={() => setShow(true)}>
+      <Button variant="primary" className="col-sm-1" onClick={() => setShow(true)}>
         Add to Cart
       </Button>
 
