@@ -11,7 +11,18 @@ function Card() {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const [total, setTotal] = useState(0);
-  const [toast, setToast] = useState(false)
+  const [toast, setToast] = useState(false);
+  //Added variable requestBody
+  const [requestBody, setRequestBody] = useState({
+    foodItems: [{
+      category: "",
+      food: "",
+      quantity: 0,
+      orderDate: Date.now(),
+      feedback: ""
+    }],
+    modeOfPayment: ""
+  });
 
 
   const categorize = () => {
@@ -29,24 +40,20 @@ function Card() {
 
   function ConfirmHandler() {
 
-    cart.forEach((item) => {
-      fetch(
-        `https://wavlunabackend-render.onrender.com/sale/quantity?id=${item.id}&quantity=${item.value}`,
-        {
-          method: "PUT",
+    //confirm handler with post method
+    fetch(
+      `https://wavlunabackend-render.onrender.com/purchase/add`,
+      {
+        method: "POST",
+        body: JSON.stringify(requestBody)
+      }
+    )
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
         }
-      )
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-          }
-
-          return response.json();
-        })
-        .then((data) => {
-          setData(data);
-        });
-    })
+        return response.json();
+      })
 
     setCart([])
     setTotal(0)
