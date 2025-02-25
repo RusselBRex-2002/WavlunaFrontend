@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Offcanvas, Button, Toast } from "react-bootstrap";
@@ -17,7 +17,7 @@ function Card() {
     foodItems: [],
     modeOfPayment: ""
   });
-  const [feedback, setFeedback] = useState("");
+  const feedBack = useRef(null)
   const [modeOfPayment, setModeOfPayment] = useState("Cash");
 
 
@@ -52,19 +52,11 @@ function Card() {
       })
 
 
-
-
-
     setCart([])
     setTotal(0)
     setShow(false)
-
     setToast(true)
     setTimeout(() => setToast(false), 3000);
-
-
-
-
 
   }
 
@@ -112,7 +104,7 @@ function Card() {
       data.map(datamap => {
         if (cartmap.id === datamap.id && requestBody.foodItems.findIndex(f => f.food === cartmap.foodItem) === -1) {
 
-          requestBody.foodItems.push({ category: datamap.category, food: datamap.foodItem, quantity: cartmap.value, orderDate: getFormattedCurrentDate(), feedback: feedback })
+          requestBody.foodItems.push({ category: datamap.category, food: datamap.foodItem, quantity: cartmap.value, orderDate: getFormattedCurrentDate(), feedback: cartmap.feedback })
           requestBody.modeOfPayment = modeOfPayment
         }
       })
@@ -129,6 +121,15 @@ function Card() {
 
   const inputHandler = (id) => {
     return cart.filter((filter) => filter.id === id).map((each) => each.value)
+  }
+
+  const feedbackHandler = (dataid, value) => {
+    cart.map(cartmap => {
+      if (cartmap.id === dataid) {
+        cartmap.feedback = value
+      }
+    })
+
   }
 
 
@@ -197,7 +198,11 @@ function Card() {
                             -
                           </Button>
                         </div>
-                        {/* Add feedback tag here */}
+                        <input className="form-control" placeholder="Feedback" ref={feedBack}
+                          onChange={(e) => {
+                            feedbackHandler(datas.id, e.target.value);
+                          }}
+                        />
                       </div>
                     </div>
 
@@ -239,7 +244,6 @@ function Card() {
       </Toast>
 
       <Button variant="primary" className="col-sm-1" onClick={() => {
-        requestHandler()
         setShow(true)
       }}>
         Add to Cart
@@ -265,22 +269,23 @@ function Card() {
               <input className="form-control fs-5" id="totalCost" value={total} readOnly />
             </div>
 
-            <label>
-              <input
-                type="radio"
-                checked={modeOfPayment === "Cash"}
-                onClick={() => paymentModeHandler("Cash")}
-              />
-              Cash
-            </label>
-            <label>
-              <input
-                type="radio"
-                checked={modeOfPayment === "UPI"}
-                onClick={() => paymentModeHandler("UPI")}
-              />
-              UPI
-            </label>
+            <div className="container gap-1 d-flex flex-row">
+              <div className="form-check">
+
+                <label className="form-check-label">
+                  <input className="form-check-input" type="radio" checked={modeOfPayment === "Cash"} onClick={() => paymentModeHandler("Cash")} />
+                  Cash
+                </label>
+              </div>
+
+              <div className="form-check">
+
+                <label className="form-check-label">
+                  <input className="form-check-input" type="radio" checked={modeOfPayment === "UPI"} onClick={() => paymentModeHandler("UPI")} />
+                  UPI
+                </label>
+              </div>
+            </div>
 
 
             <button
