@@ -2,8 +2,6 @@ import React from "react";
 import { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Offcanvas, Button,Toast } from "react-bootstrap";
-import { Container } from "react-bootstrap";
-import { imagelist } from "../assets/image";
 
 
 function Card() {
@@ -140,11 +138,12 @@ function Card() {
 
                     <div className="container d-flex">
                       <div className="card p-3">
-                        <img className="card-img-top" src={imagelist[datas.id - 1]} height="100px" />
+                        <img className="card-img-top" src={datas.foodImg} height="100px" />
+                        {console.log(datas)}
                         <text className="card-title">{datas.foodItem}</text>
                         <text className="pricing h-5" >Price: {datas.price}</text>
                         <div className="cardvalue d-flex gap-2 m-2">
-                          <input variant="outlined" className="form-control" type="number" id={datas.id} value={inputHandler(datas.id)} readOnly />
+                          <input variant="outlined" className="form-control" placeholder="Quantity" type="number" id={datas.id} value={inputHandler(datas.id)} readOnly />
                           <Button
                             variant="success"
                             onClick={() => plusHandler(datas.id, datas.price, datas.foodItem)}
@@ -159,6 +158,7 @@ function Card() {
                             -
                           </Button>
                         </div>
+                        <input className="form-control" placeholder="Feedback"/>
                       </div>
                     </div>
 
@@ -199,7 +199,7 @@ function Card() {
         <Toast.Body>Order Completed</Toast.Body>
       </Toast>
 
-      <Button variant="primary" className="col-1" onClick={() => setShow(true)}>
+      <Button variant="primary" className="col-sm-1" onClick={() => setShow(true)}>
         Add to Cart
       </Button>
 
