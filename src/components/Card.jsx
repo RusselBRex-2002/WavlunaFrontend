@@ -18,7 +18,7 @@ function Card() {
     modeOfPayment: ""
   });
   const [feedback, setFeedback] = useState("");
-  const [modeOfPayment, SetModeOfPayment] = useState("Cash");
+  const [modeOfPayment, setModeOfPayment] = useState("Cash");
 
 
   const categorize = () => {
@@ -36,23 +36,23 @@ function Card() {
 
   function ConfirmHandler() {
 
-    //Uncomment to proceed postmapping
 
-    // fetch(
-    //   `https://wavlunabackend-render.onrender.com/purchase/add`,
-    //   {
-    //     method: "POST",
-    //     body: JSON.stringify(requestBody)
-    //   }
-    // )
-    //   .then((response) => {
-    //     if (!response.ok) {
-    //       throw new Error(`HTTP error! Status: ${response.status}`);
-    //     }
-    //     return response.json();
-    //   })
+    fetch(`https://wavlunabackend-render.onrender.com/purchase/add`, {
+      method: "POST",
+      body: JSON.stringify(requestBody),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8"
+      }
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok " + response.statusText);
+        }
+        return response.json();
+      })
 
-    console.log(requestBody);
+
+
 
 
     setCart([])
@@ -96,12 +96,23 @@ function Card() {
     setTotal(cost)
   }
 
+  const getFormattedCurrentDate = () => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+  };
+
   const requestHandler = () => {
     cart.map(cartmap => {
       data.map(datamap => {
         if (cartmap.id === datamap.id && requestBody.foodItems.findIndex(f => f.food === cartmap.foodItem) === -1) {
 
-          requestBody.foodItems.push({ category: datamap.category, food: datamap.foodItem, quantity: cartmap.value, orderDate: Date.now(), feedback: feedback })
+          requestBody.foodItems.push({ category: datamap.category, food: datamap.foodItem, quantity: cartmap.value, orderDate: getFormattedCurrentDate(), feedback: feedback })
           requestBody.modeOfPayment = modeOfPayment
         }
       })
@@ -110,7 +121,10 @@ function Card() {
   }
 
   const paymentModeHandler = (mode) => {
-    SetModeOfPayment(mode)
+
+    setModeOfPayment(mode)
+    requestBody.modeOfPayment = mode
+
   }
 
   const inputHandler = (id) => {
